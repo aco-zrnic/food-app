@@ -1,6 +1,7 @@
-import React ,{useState} from 'react'
+import React ,{useState, useEffect} from 'react'
 import { Text, View, Alert} from 'react-native'
 import SearchBar from './components/SearchBar'
+import ResultList from './components/ResultsList'
 import yelp from '../api/yelp'
 
 
@@ -21,16 +22,24 @@ async function SearchAPI(termInput) {
         [
             {
                 text:'Ok',
-                onPress: ()=>console.log('Ok button is pressed')
+                onPress: ()=>console.log('Ok button is pressed, Error happened')
             }
         ])
     }
     return []
 }
-
+const filterResultByPrice = function(businesses, price){
+    //price == '$' || '$$' || '$$$'
+    console.log(businesses.price)
+}
 const SearchScreen = function(props){
     const [term,setTerm] = useState('')
     const [results,setResults]=useState([])
+
+    useEffect(()=>{
+        setResults(SearchAPI(term).then(response=>{setResults(response)}))
+        filterResultByPrice(results,'$')
+    },[])
 
     return(
         <View>
@@ -40,6 +49,9 @@ const SearchScreen = function(props){
                     setResults(await SearchAPI(term))}}
            />
            <Text>We have found {results.length} results</Text>
+           <ResultList title='Cost Effective' />
+           <ResultList title='Bit Pricer' />
+           <ResultList title='Big Spender!'/>
         </View>)
 }
 
