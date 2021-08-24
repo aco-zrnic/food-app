@@ -9,9 +9,9 @@ async function SearchAPI(termInput) {
     try {
         const response = await yelp.get('/search', {
             params: {
-                limit: 50,
+                limit: 40,
                 term: termInput,
-                location: 'san jose'
+                location: 'los angeles'
             }
         });
         return response.data.businesses
@@ -30,17 +30,21 @@ async function SearchAPI(termInput) {
 }
 const filterResultByPrice = function(businesses, price){
     //price == '$' || '$$' || '$$$'
-    console.log(businesses.price)
+    if(businesses instanceof Array){
+        console.log(businesses.length)
+        return businesses.filter(business=>{return business.price==price})
+    }  
+    
 }
 const SearchScreen = function(props){
     const [term,setTerm] = useState('')
     const [results,setResults]=useState([])
 
     useEffect(()=>{
-        setResults(SearchAPI(term).then(response=>{setResults(response)}))
-        filterResultByPrice(results,'$')
+        SearchAPI(term).then(response=>{setResults(response)})
     },[])
-
+    
+    
     return(
         <View>
            <SearchBar term={term} OnTermChange={(newTerm)=>{setTerm(newTerm)}}
@@ -49,9 +53,9 @@ const SearchScreen = function(props){
                     setResults(await SearchAPI(term))}}
            />
            <Text>We have found {results.length} results</Text>
-           <ResultList title='Cost Effective' />
-           <ResultList title='Bit Pricer' />
-           <ResultList title='Big Spender!'/>
+           <ResultList title='Cost Effective' data={filterResultByPrice(results,"$")}/>
+           <ResultList title='Bit Pricer' data={filterResultByPrice(results,"$$")}/>
+           <ResultList title='Big Spender!' data={filterResultByPrice(results,"$$$")}/>
         </View>)
 }
 

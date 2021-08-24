@@ -1,15 +1,23 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet,FlatList } from 'react-native';
 
 
 
 const ResultList = function(props){
 
-    console.log(props.data)
-
     return(
         <View>
             <Text style={styles.textStyle}>{props.title}</Text>
+            <Text>{props?.data?.length}</Text>
+            <FlatList
+                data={props.data}
+                keyExtractor={(result)=>result.id}
+                showsHorizontalScrollIndicator={false}
+                horizontal={true}
+                renderItem={({item})=>{
+                    return <Text>{item.name}  ;</Text>
+                }}
+                />
         </View>
     )
 }
