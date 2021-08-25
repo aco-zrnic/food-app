@@ -1,5 +1,5 @@
 import React ,{useState, useEffect} from 'react'
-import { Text, View, Alert} from 'react-native'
+import { Text, View, Alert, ScrollView} from 'react-native'
 import SearchBar from './components/SearchBar'
 import ResultList from './components/ResultsList'
 import yelp from '../api/yelp'
@@ -30,7 +30,7 @@ async function SearchAPI(termInput) {
 }
 const filterResultByPrice = function(businesses, price){
     //price == '$' || '$$' || '$$$'
-    if(businesses instanceof Array){
+    if(businesses instanceof Array && businesses.length>0){
         console.log(businesses.length)
         return businesses.filter(business=>{return business.price==price})
     }  
@@ -53,9 +53,11 @@ const SearchScreen = function(props){
                     setResults(await SearchAPI(term))}}
            />
            <Text>We have found {results.length} results</Text>
-           <ResultList title='Cost Effective' data={filterResultByPrice(results,"$")}/>
-           <ResultList title='Bit Pricer' data={filterResultByPrice(results,"$$")}/>
-           <ResultList title='Big Spender!' data={filterResultByPrice(results,"$$$")}/>
+            <ScrollView style={{marginBottom:150}}>
+                <ResultList title='Cost Effective' data={filterResultByPrice(results, "$")} />
+                <ResultList title='Bit Pricer' data={filterResultByPrice(results, "$$")} />
+                <ResultList title='Big Spender!' data={filterResultByPrice(results, "$$$")} />
+            </ScrollView>
         </View>)
 }
 
