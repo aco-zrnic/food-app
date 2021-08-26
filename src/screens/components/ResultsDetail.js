@@ -1,13 +1,19 @@
 import React from 'react';
-import { Text,View, Image, StyleSheet } from 'react-native';
+import { Text,View, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { withNavigation } from 'react-navigation';
 
-const ResultsDetail = function({result}){
-    console.log(result.image_url)
+const ResultsDetail = function({navigation,result}){
+
     return (
         <View style={styles.viewStyle}>
-            <Image style={styles.imageStyle} source={{uri:result.image_url}}/>
-            <Text style={styles.nameStyle}>{result.name}</Text>
-            <Text style={styles.statsStyle}>{result.rating} Stars, {result.review_count} Reviews</Text>
+            <TouchableOpacity
+                onPress={()=>{
+                    navigation.navigate('SingleShop',{id:result.id})
+                    }}>
+                <Image style={styles.imageStyle} source={{ uri: result.image_url }} />
+                <Text style={styles.nameStyle}>{result.name}</Text>
+                <Text style={styles.statsStyle}>{result.rating} Stars, {result.review_count} Reviews</Text>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -34,4 +40,4 @@ const styles = StyleSheet.create({
         marginLeft:30
     }
 })
-export default ResultsDetail;
+export default withNavigation(ResultsDetail);

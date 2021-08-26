@@ -2,9 +2,7 @@ import React from 'react';
 import { Text, View, StyleSheet,FlatList } from 'react-native';
 import ResultsDetail from './ResultsDetail';
 
-
 const ResultList = function(props){
-
     return(
         <View>
             <Text style={styles.textStyle}>{props.title}</Text>
@@ -23,7 +21,11 @@ const ResultList = function(props){
 
 const styles = StyleSheet.create({
 
+    viewStyle:{
+        paddingLeft:30
+    },
     textStyle:{
+        marginLeft:30,
         fontSize:18,
         fontWeight:'bold'
     }

@@ -46,16 +46,15 @@ const SearchScreen = function(props){
     
     
     return(
-        <View>
+        <View style={{flex:1}}>
            <SearchBar term={term} OnTermChange={(newTerm)=>{setTerm(newTerm)}}
                 onTermSubmit={async ()=>{
                     console.log('termn was submited')
                     setResults(await SearchAPI(term))}}
            />
-           <Text>We have found {results.length} results</Text>
-            <ScrollView style={{marginBottom:150}}>
+            <ScrollView>
                 <ResultList title='Cost Effective' data={filterResultByPrice(results, "$")} />
-                <ResultList title='Bit Pricer' data={filterResultByPrice(results, "$$")} />
+                <ResultList title='Bit Pricier'data={filterResultByPrice(results, "$$")} />
                 <ResultList title='Big Spender!' data={filterResultByPrice(results, "$$$")} />
             </ScrollView>
         </View>)
