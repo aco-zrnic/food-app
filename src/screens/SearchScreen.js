@@ -44,7 +44,6 @@ const SearchScreen = function(props){
         SearchAPI(term).then(response=>{setResults(response)})
     },[])
     
-    
     return(
         <View style={{flex:1}}>
            <SearchBar term={term} OnTermChange={(newTerm)=>{setTerm(newTerm)}}

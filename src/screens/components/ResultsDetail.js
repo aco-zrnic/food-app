@@ -1,9 +1,9 @@
 import React from 'react';
 import { Text,View, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { withNavigation } from 'react-navigation';
+import { useNavigation } from '@react-navigation/native';
 
-const ResultsDetail = function({navigation,result}){
-
+const ResultsDetail = function({result}){
+    const navigation = useNavigation();
     return (
         <View style={styles.viewStyle}>
             <TouchableOpacity
@@ -40,4 +40,4 @@ const styles = StyleSheet.create({
         marginLeft:30
     }
 })
-export default withNavigation(ResultsDetail);
+export default (ResultsDetail);

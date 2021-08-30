@@ -1,7 +1,7 @@
 import React,{useEffect, useState}from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Button } from 'react-native';
 import yelp from '../api/yelp'
-
+/*
 async function SearchAPI(id) {
     try {
         const response = await yelp.get('/'+id);
@@ -18,20 +18,42 @@ async function SearchAPI(id) {
         ])
     }
 }
-
-const ResultsShowScreen = function ({navigation}) {
+*/
+const ResultsShowScreen = function ({route,navigation}) {
     
+    const id = route.params.id
+    console.log(route)
     const[shopInfo,setShopInfo]=useState(null)
 
-    console.log(navigation.getParam('id'))
-    const id = navigation.getParam('id')
+
+    const searchAPI=async()=> {
+        try {
+            const res = await yelp.get('/'+id);
+            setShopInfo(res.data)
+        }
+        catch (err) {
+            console.log(err);
+            Alert.alert('Error','Something went wrong!',
+            [
+                {
+                    text:'Ok',
+                    onPress: ()=>console.log('Ok button is pressed, Error happened')
+                }
+            ])
+        }
+    }
+
 
     useEffect(()=>{
-        SearchAPI(id).then(response=>{setShopInfo(response)})
+        searchAPI().then(
+        navigation.setOptions({title:shopInfo.alias}))
     },[])
+    
     return (
         <View>
-            {shopInfo instanceof Object && <Text>{shopInfo.alias}</Text>}
+            {shopInfo instanceof Object &&
+             <Button title='XDS' onPress={()=>{navigation.setOptions({title:shopInfo.alias})}}/>
+             }
         </View>
     )
 }
