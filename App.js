@@ -17,7 +17,6 @@ function MyStack() {
       <Stack.Screen
         name="SingleShop"
         component={ResultsShowScreen}
-        //options={{ title: 'Business Search' }}
         options={({ route }) => ({ title: route.params.name })}
       />
     </Stack.Navigator>

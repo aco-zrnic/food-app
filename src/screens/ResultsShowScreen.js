@@ -20,7 +20,9 @@ async function SearchAPI(id) {
 }
 */
 const ResultsShowScreen = function ({route,navigation}) {
-    
+    console.log(route.params.res.alias)
+    //navigation.setOptions({title:route.params.shopInfo.alias})
+    /*
     const id = route.params.id
     console.log(route)
     const[shopInfo,setShopInfo]=useState(null)
@@ -43,17 +45,14 @@ const ResultsShowScreen = function ({route,navigation}) {
         }
     }
 
-
+    */
     useEffect(()=>{
-        searchAPI().then(
-        navigation.setOptions({title:shopInfo.alias}))
+        navigation.setOptions({title:route.params.res.alias})
     },[])
     
     return (
         <View>
-            {shopInfo instanceof Object &&
-             <Button title='XDS' onPress={()=>{navigation.setOptions({title:shopInfo.alias})}}/>
-             }
+            <Text>Text</Text>
         </View>
     )
 }

@@ -1,5 +1,5 @@
 import React ,{useState, useEffect} from 'react'
-import { Text, View, Alert, ScrollView} from 'react-native'
+import { Text, View, Alert, ScrollView, ActivityIndicator, StyleSheet} from 'react-native'
 import SearchBar from './components/SearchBar'
 import ResultList from './components/ResultsList'
 import yelp from '../api/yelp'
@@ -36,27 +36,48 @@ const filterResultByPrice = function(businesses, price){
     }  
     
 }
-const SearchScreen = function(props){
-    const [term,setTerm] = useState('')
-    const [results,setResults]=useState([])
+const SearchScreen = function ({navigation}) {
+    const [term, setTerm] = useState('')
+    const [results, setResults] = useState([])
+    const [isLoading, setLoading] = useState(false)
+    useEffect(() => {
+        SearchAPI(term).then(response => { setResults(response) })
+    }, [])
 
     useEffect(()=>{
-        SearchAPI(term).then(response=>{setResults(response)})
-    },[])
-    
-    return(
-        <View style={{flex:1}}>
-           <SearchBar term={term} OnTermChange={(newTerm)=>{setTerm(newTerm)}}
-                onTermSubmit={async ()=>{
+        navigation.addListener('focus', () => {
+            setLoading(false)
+          });
+    },[isLoading])
+    return (
+        <View style={{ flex: 1 }}>
+            <SearchBar term={term} OnTermChange={(newTerm) => { setTerm(newTerm) }}
+                onTermSubmit={async () => {
                     console.log('termn was submited')
-                    setResults(await SearchAPI(term))}}
-           />
+                    setResults(await SearchAPI(term))
+                }}
+            />
             <ScrollView>
-                <ResultList title='Cost Effective' data={filterResultByPrice(results, "$")} />
-                <ResultList title='Bit Pricier'data={filterResultByPrice(results, "$$")} />
-                <ResultList title='Big Spender!' data={filterResultByPrice(results, "$$$")} />
+                <ResultList title='Cost Effective' loading={setLoading} data={filterResultByPrice(results, "$")} />
+                <ResultList title='Bit Pricier' loading={setLoading} data={filterResultByPrice(results, "$$")} />
+                <ResultList title='Big Spender!' loading={setLoading} data={filterResultByPrice(results, "$$$")} />
             </ScrollView>
+            {isLoading && <ActivityIndicator style={style.activityIndicatorStyle} size="large" color="#0000ff" />}
         </View>)
 }
+
+const style=StyleSheet.create({
+
+    activityIndicatorStyle:{
+        position: 'absolute', 
+        alignItems: 'center',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        justifyContent: 'center'
+    }
+})
+
 
 export default SearchScreen;

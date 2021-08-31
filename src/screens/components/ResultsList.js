@@ -12,7 +12,7 @@ const ResultList = function(props){
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}
                 renderItem={({item})=>{
-                    return <ResultsDetail result={item}/>
+                    return <ResultsDetail loading={props.loading} result={item}/>
                 }}
                 />
         </View>
